@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>茶月食品 - 農豆漿限時回饋</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; }
+        
+        /* 自定義彈跳視窗動畫 */
+        .modal {
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="bg-[#f9f5f0] text-gray-800">
+
+    <nav class="bg-white shadow-sm py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xl"><img src="logo.png" alt="圖片的文字描述"></div>
+                <span class="text-xl font-bold text-gray-700 tracking-wide">茶月食品</span>
+            </div>
+            <div class="hidden md:flex space-x-6 text-gray-600 font-medium">
+                <a href="https://www.ochatsuki.com.tw/pages/about-us" class="hover:text-[#8c9e5e] transition">關於我們</a>
+                <a href="https://www.ochatsuki.com.tw/collections/%E6%89%80%E6%9C%89%E5%95%86%E5%93%81" class="hover:text-[#8c9e5e] transition">產品介紹</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-12 md:py-20 flex flex-col md:flex-row items-center">
+        
+        <div class="md:w-1/2 md:pr-12 text-center md:text-left mb-10 md:mb-0">
+            <span class="inline-block bg-[#8c9e5e] text-white px-3 py-1 rounded-full text-sm mb-4 tracking-wider">限時回饋活動</span>
+            <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6 text-gray-800">
+                純粹天然，<br>
+                <span class="text-[#d48806]">有機濃豆漿</span> 免費體驗
+            </h1>
+            <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                感謝支持！茶月食品提供限量 200 瓶有機濃豆漿（940ml）。
+                堅持傳統工法，保留最純粹的黃豆香氣。現在點擊下方按鈕，立即查詢是否還有名額！
+            </p>
+            
+            <button id="campaignBtn" disabled
+                class="bg-gray-400 text-white text-xl font-bold py-4 px-10 rounded-full shadow-lg cursor-not-allowed transition duration-300">
+                讀取名額中...
+            </button>
+            <p class="mt-4 text-sm text-gray-500">
+                * 剩餘名額更新時間：<span id="updateTime"></span>
+            </p>
+        </div>
+
+        <div class="md:w-1/2 relative">
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#e8dfd1] rounded-full -z-10"></div>
+            <img src="image_0bb3be.jpg" alt="茶月有機濃豆漿" class="w-full max-w-md mx-auto drop-shadow-2xl">
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-6 text-center text-sm font-bold text-gray-400">
+            <p>&copy; 2026 茶月食品有限公司 All Rights Reserved. Designed by <a href="https://www.cyberbiz.io/?utm_source=poweredbycyberbiz" target="_blank"><a href="https://www.cyberbiz.io/" class="text-[#8c9e5e] hover:text-white transition">CyberBiz </a><a>.</a>
+    </footer>
+
+    <div id="successModal" class="modal fixed inset-0 flex items-center justify-center z-50 px-4">
+        <div class="absolute inset-0 bg-black opacity-50"></div> 
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full relative z-10 text-center transform transition-all scale-100">
+            
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">恭喜獲得!!</h3>
+            <p class="text-gray-600 mb-6">您已成功搶到名額！<br>獲得農豆漿 (940ml) 一罐。</p>
+            
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdmdeaufv_dbPn_1bi6TrxCubNdDtvklRmP0W4ZmqNtep9CNw/viewform" target="_blank" 
+               class="block w-full bg-[#d48806] text-white font-bold py-3 rounded-xl hover:bg-[#b06d00] transition">
+                前往填寫領獎資料，以保留獲獎資格
+            </a>
+            
+            <button onclick="closeModal()" class="mt-4 text-sm text-gray-400 hover:text-gray-600 underline">
+                關閉視窗
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 1. 設定今天的日期時間
+        document.getElementById('updateTime').innerText = new Date().toLocaleString();
+
+        // ★★★ 請填入您測試成功的 Google Apps Script 網址 ★★★
+        const API_URL = "https://script.google.com/macros/s/AKfycbzlU5dpDk1vVYvnQz4VaNQbLc7F87ZhHs7ZCU_vhT5zxZf4Ml809HvhNfB5Ah118U-Ppw/exec";
+        var btn = document.getElementById('campaignBtn');
+
+        // 2. 網頁載入時，默默去問 Google 現在幾個人
+        fetch(API_URL)
+            .then(response => response.json())
+            .then(data => {
+                // 連線成功，偷偷在後台紀錄人數 (按 F12 才看得到)
+                console.log("目前參加人數:", data.count);
+                
+                // 3. 判斷邏輯
+                if (data.isFull) {
+                    // 如果滿了 (isFull = true) -> 鎖住按鈕
+                    setButtonFull();
+                } else {
+                    // 如果沒滿 (isFull = false) -> 解鎖按鈕
+                    enableButton();
+                }
+            })
+            .catch(error => {
+                // 連線失敗 (網路問題或 Google 沒回應)
+                console.error("連線錯誤，啟用備援模式", error);
+                // 為了不讓按鈕壞掉，預設還是開放給客人點 (由表單那邊擋人)
+                enableButton(); 
+            });
+
+
+        // --- 功能函式區 (不用動) ---
+
+        // 解鎖按鈕 (變橘色、可以點)
+        function enableButton() {
+            btn.innerText = "立刻領取";
+            btn.disabled = false;
+            // 移除灰色樣式
+            btn.classList.remove("bg-gray-400", "cursor-not-allowed");
+            // 加上橘色樣式與滑鼠互動
+            btn.classList.add("bg-[#d48806]", "hover:bg-[#b06d00]", "hover:scale-105", "cursor-pointer");
+            // 綁定點擊事件 -> 開啟彈窗
+            btn.onclick = openModal;
+        }
+
+        // 鎖住按鈕 (變灰色、不能點)
+        function setButtonFull() {
+            btn.innerText = "抱歉，名額已滿";
+            btn.disabled = true;
+            // 移除橘色樣式
+            btn.classList.remove("bg-[#d48806]", "hover:bg-[#b06d00]", "hover:scale-105", "cursor-pointer");
+            // 加上灰色樣式
+            btn.classList.add("bg-gray-400", "cursor-not-allowed");
+            // 移除點擊事件
+            btn.onclick = null;
+        }
+
+        // 開啟彈跳視窗
+        function openModal() {
+            document.getElementById('successModal').classList.add('active');
+        }
+
+        // 關閉彈跳視窗
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
